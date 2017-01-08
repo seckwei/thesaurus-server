@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('express')(),
-    port = process.env.port || 8888, 
+    port = process.env.PORT || 8888, 
     tcom = require('thesaurus-com');
 
 app.get('/q', (req, res) => {
