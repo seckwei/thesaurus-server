@@ -1,3 +1,5 @@
+/* @flow */
+
 'use strict';
 
 const app = require('express')(),
@@ -11,14 +13,30 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/q', (req, res) => {
-    if(req.query.word){
-        res.json(tcom.search(req.query.word).synonyms);
+function handleQuery(req, res): void {
+    let search: string = req.query.search;
+    if(!!search){
+        // Remove unecessary commas
+        search = search.replace(/(^,)|(,,)|(,$)/gmi, '').trim();
+        let words: Array<string> = search.split(',');
+
+        if(words.length) {
+            let response: Array<{word: string, synonyms: Array<string>}> = [];
+            words.forEach((word) => {
+                response.push({
+                    word,
+                    synonyms: tcom.search(word).synonyms
+                });
+            });
+            res.json(response);
+        }
     }
     else {
         res.json({ error: 'search word not provided' });
     }
-});
+}
+
+app.get('/q', handleQuery);
 
 app.listen(port, (err) => {
     if(err) {
