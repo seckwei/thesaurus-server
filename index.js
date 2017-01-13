@@ -7,8 +7,7 @@ const app = require('express')(),
     tcom = require('thesaurus-com');
 
 app.use((req, res, next) => {
-    // Temporarily allow all origins
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://seckwei.github.io');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     next();
 });
